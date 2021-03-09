@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAD2_Tasks.Core", "MAD2_Tasks.Core.csproj", "{C117B0B4-BE6B-4267-B4ED-12A770654FB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAD2_Tasks.Core", "MAD2_Tasks.Core.csproj", "{C117B0B4-BE6B-4267-B4ED-12A770654FB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAD2_Tasks.General", "..\MAD2_Tasks.General\MAD2_Tasks.General.csproj", "{4F580E9E-B6C5-4237-94AA-DAE73DF54CDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAD2_Tasks.General", "..\MAD2_Tasks.General\MAD2_Tasks.General.csproj", "{4F580E9E-B6C5-4237-94AA-DAE73DF54CDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1", "..\Task1\Task1.csproj", "{05892EF2-75BF-49E8-97AD-458A9E4D0D80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task1", "..\Task1\Task1.csproj", "{05892EF2-75BF-49E8-97AD-458A9E4D0D80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task2", "..\Task2\Task2.csproj", "{7F38FFC1-6517-4A02-9DF9-185F076B225A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{05892EF2-75BF-49E8-97AD-458A9E4D0D80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05892EF2-75BF-49E8-97AD-458A9E4D0D80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05892EF2-75BF-49E8-97AD-458A9E4D0D80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F38FFC1-6517-4A02-9DF9-185F076B225A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F38FFC1-6517-4A02-9DF9-185F076B225A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F38FFC1-6517-4A02-9DF9-185F076B225A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F38FFC1-6517-4A02-9DF9-185F076B225A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
