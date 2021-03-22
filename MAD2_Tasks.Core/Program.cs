@@ -2,21 +2,28 @@
 using MAD2_Tasks.General;
 using MAD2_Tasks.General.Code;
 using MAD2_Tasks.Core.Code;
+using Task2;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace MAD2_Tasks.Core
 {
     class Program
-    {       
+    {
         static void Main(string[] args)
         {
+
             //Task 1 - K
             EpsilonRadiusTest();
             KnnGeneratorTest();
             EpsilonKnnGeneratorTest();
 
+            //Task 2 - O
+            //CommunityDetectionUsingHierarchicalClusteringTest();
+
         }
 
-        #region Task 1
+        #region Task 1 - K
 
         private static void EpsilonRadiusTest()
         {
@@ -24,7 +31,7 @@ namespace MAD2_Tasks.Core
             var vectorDataLoader = new VectorDataLoader();
             var vectorData = vectorDataLoader.LoadData(Constants.IrisDataSetPath, skipRowsNumber: 1, columnsToSkip: new int[] { 4 });
 
-            var network = epsilonRadisuAlgorithm.CreateNetwork(vectorData, 0.3);
+            var network = epsilonRadisuAlgorithm.CreateNetwork(vectorData, 1.5);
 
             var networkExporter = new NetworkExporter();
             networkExporter.ExportToGEXF(network, Constants.EpsilonGeneratedNetworkOutputPath);
@@ -52,6 +59,45 @@ namespace MAD2_Tasks.Core
             
             var networkExporter = new NetworkExporter();
             networkExporter.ExportToGEXF(network, Constants.EpsilonKnnGeneratedNetworkOutputPath);
+        }
+
+        #endregion
+
+        #region Task 2 - O
+
+        private static void CommunityDetectionUsingHierarchicalClusteringTest()
+        {
+            var comunityDetectionAlgorithm = new CommunityDetectionUsingHierarchicalClustering();
+
+            var networkLoader = new AdjacencyListGraphLoader();
+            var network = networkLoader.Load(Constants.KarateClubPath);
+
+
+            var comunities = comunityDetectionAlgorithm.GetComunities(network, out double[][] similarityMatrix);
+
+            //Generov8ni heatmapy
+            //var stringToExcelBuilder = new StringBuilder();
+            //for (int row = 0; row < similarityMatrix.Length; row++)
+            //{
+            //    var line = string.Join(";", similarityMatrix[row]);
+            //    stringToExcelBuilder.AppendLine(line);
+            //}
+            //var heatMap = stringToExcelBuilder.ToString();
+
+            var threeComunity = comunities.Where(x => x.Count == 3).FirstOrDefault();
+
+            var networkWithComunities = comunityDetectionAlgorithm.GetNetworkWithComunityId(network, threeComunity);
+
+            var comunityExporter = new ComunityExporter();
+
+            var colorMap = new Dictionary<int, string>()
+            {
+                { 0, "#D34021" },
+                { 1, "#58C11B" },
+                { 2, "#1B60C1" }
+            };
+
+            comunityExporter.ExportToGDF(networkWithComunities, colorMap, Constants.KarateClubComunityExportPath);
         }
 
         #endregion

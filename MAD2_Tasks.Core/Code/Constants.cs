@@ -10,5 +10,9 @@ namespace MAD2_Tasks.Core.Code
         public static readonly string EpsilonGeneratedNetworkOutputPath = "../../../../Task1/Output/epsilonGeneratedNetwork.gexf";
         public static readonly string KnnGeneratedNetworkOutputPath = "../../../../Task1/Output/knnGeneratedNetwork.gexf";
         public static readonly string EpsilonKnnGeneratedNetworkOutputPath = "../../../../Task1/Output/epsilonKnnGeneratedNetwork.gexf";
+        
+        
+        public static readonly string KarateClubPath = "../../../Data/KarateClub.csv";
+        public static readonly string KarateClubComunityExportPath = "../../../../Task2/Output/karateClubComunity.gdf";
     }
 }
