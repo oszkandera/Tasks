@@ -5,6 +5,8 @@ using MAD2_Tasks.Core.Code;
 using Task2;
 using System.Linq;
 using System.Collections.Generic;
+using Task3;
+using MAD2_Tasks.General.Enums;
 
 namespace MAD2_Tasks.Core
 {
@@ -14,13 +16,15 @@ namespace MAD2_Tasks.Core
         {
 
             //Task 1 - K
-            EpsilonRadiusTest();
-            KnnGeneratorTest();
-            EpsilonKnnGeneratorTest();
+            //EpsilonRadiusTest();
+            //KnnGeneratorTest();
+            //EpsilonKnnGeneratorTest();
 
             //Task 2 - O
             //CommunityDetectionUsingHierarchicalClusteringTest();
 
+            //Task 3 - K
+            ModelGeneratorTest();
         }
 
         #region Task 1 - K
@@ -31,7 +35,7 @@ namespace MAD2_Tasks.Core
             var vectorDataLoader = new VectorDataLoader();
             var vectorData = vectorDataLoader.LoadData(Constants.IrisDataSetPath, skipRowsNumber: 1, columnsToSkip: new int[] { 4 });
 
-            var network = epsilonRadisuAlgorithm.CreateNetwork(vectorData, 1.5);
+            var network = epsilonRadisuAlgorithm.CreateNetwork(vectorData, 0.9);
 
             var networkExporter = new NetworkExporter();
             networkExporter.ExportToGEXF(network, Constants.EpsilonGeneratedNetworkOutputPath);
@@ -43,7 +47,7 @@ namespace MAD2_Tasks.Core
             var vectorDataLoader = new VectorDataLoader();
             var vectorData = vectorDataLoader.LoadData(Constants.IrisDataSetPath, skipRowsNumber: 1, columnsToSkip: new int[] { 4 });
 
-            var network = knnGeneratorAlgorithm.CreateNetwork(vectorData, 1);
+            var network = knnGeneratorAlgorithm.CreateNetwork(vectorData, 10);
             
             var networkExporter = new NetworkExporter();
             networkExporter.ExportToGEXF(network, Constants.KnnGeneratedNetworkOutputPath);
@@ -55,7 +59,7 @@ namespace MAD2_Tasks.Core
             var vectorDataLoader = new VectorDataLoader();
             var vectorData = vectorDataLoader.LoadData(Constants.IrisDataSetPath, skipRowsNumber: 1, columnsToSkip: new int[] { 4 });
 
-            var network = knnGeneratorAlgorithm.CreateNetwork(vectorData, 0.9, 1);
+            var network = knnGeneratorAlgorithm.CreateNetwork(vectorData, 0.9, 3);
             
             var networkExporter = new NetworkExporter();
             networkExporter.ExportToGEXF(network, Constants.EpsilonKnnGeneratedNetworkOutputPath);
@@ -75,7 +79,7 @@ namespace MAD2_Tasks.Core
 
             var comunities = comunityDetectionAlgorithm.GetComunities(network, out double[][] similarityMatrix);
 
-            //Generov8ni heatmapy
+            //Generováni heatmapy
             //var stringToExcelBuilder = new StringBuilder();
             //for (int row = 0; row < similarityMatrix.Length; row++)
             //{
@@ -98,6 +102,23 @@ namespace MAD2_Tasks.Core
             };
 
             comunityExporter.ExportToGDF(networkWithComunities, colorMap, Constants.KarateClubComunityExportPath);
+        }
+
+        #endregion
+
+        #region Task 3 - K
+
+        private static void ModelGeneratorTest()
+        {
+            var linkSelectionModelGenerator = new LinkSelectionModelGenerator();  
+            var graphLinkSelection = linkSelectionModelGenerator.Generate(1000, 0.5, 0.1);
+
+            var copyingModelGenerator = new CopyingModelGenerator();
+            var graphCopyingModel = copyingModelGenerator.Generate(1000, 0.5, 0.1);
+
+            var networkExporter = new NetworkExporter();
+            networkExporter.ExportToGEXF(graphLinkSelection, Constants.LinkSelectionModelExportPath);
+            networkExporter.ExportToGEXF(graphCopyingModel, Constants.CopyingModelExportPath, EdgeType.Directed);
         }
 
         #endregion
