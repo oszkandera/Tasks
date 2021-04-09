@@ -1,6 +1,6 @@
 ﻿namespace MAD2_Tasks.General.Factory
 {
-    public static class MatrixFactory
+    public static class ArrayFactory
     {
         public static T[][] CreateMatrix<T>(int size, T defaultValue)
         {
@@ -15,6 +15,17 @@
                 }
             }
             return adjacencyMatrix;
+        }
+
+        public static T[][] InitTwoDimensionalArray<T>(int sizeDimension1, int sizeDimension2)
+        {
+            var array = new T[sizeDimension1][];
+
+            for (int i = 0; i < sizeDimension1; i++)
+            {
+                array[i] = new T[sizeDimension2];
+            }
+            return array;
         }
     }
 }

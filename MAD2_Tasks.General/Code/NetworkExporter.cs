@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MAD2_Tasks.General.Enums;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 
@@ -23,13 +24,19 @@ namespace MAD2_Tasks.General.Code
             }
         }
 
-        public void ExportToGEXF(Dictionary<int, List<int>> network, string path)
+        public void ExportToGEXF(Dictionary<int, List<int>> network, string path, EdgeType edgeType = EdgeType.Undirected)
         {
             var document = new XDocument();
 
-            var graphElement = new XElement("graph", new XAttribute("mode", "static"), new XAttribute("defaultedgetype", "undirected"));
+            var graphElement = new XElement("graph", new XAttribute("mode", "static"),
+                                             new XAttribute("defaultedgetype", edgeType == EdgeType.Undirected ? "undirected" : "directed"));
 
             var nodesElement = new XElement("nodes");
+
+            if(edgeType == EdgeType.Undirected)
+            {
+                RemoveParalelEdges(network);
+            }
 
             foreach(var node in network)
             {
@@ -63,6 +70,22 @@ namespace MAD2_Tasks.General.Code
             document.Add(rootElement);
 
             document.Save(path);
+        }
+
+        private Dictionary<int, List<int>> RemoveParalelEdges(Dictionary<int, List<int>> network)
+        {
+            var networkWithoutParalellEdges = new Dictionary<int, List<int>>();
+
+            foreach(var node in network)
+            {
+                for (int i = 0; i < node.Value.Count; i++)
+                {
+                    var neighbor = node.Value[i];
+                    network[neighbor].Remove(node.Key);
+                }
+            }
+
+            return networkWithoutParalellEdges;
         }
     }
 }

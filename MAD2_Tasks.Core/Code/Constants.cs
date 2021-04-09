@@ -14,5 +14,8 @@ namespace MAD2_Tasks.Core.Code
         
         public static readonly string KarateClubPath = "../../../Data/KarateClub.csv";
         public static readonly string KarateClubComunityExportPath = "../../../../Task2/Output/karateClubComunity.gdf";
+
+        public static readonly string LinkSelectionModelExportPath = "../../../../Task3/Output/linkSelectionModel.gexf";
+        public static readonly string CopyingModelExportPath = "../../../../Task3/Output/copyingModel.gexf";
     }
 }

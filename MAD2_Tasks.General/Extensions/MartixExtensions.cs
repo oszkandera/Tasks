@@ -10,7 +10,7 @@ namespace MAD2_Tasks.General.Extensions
         public static double[][] ToSimilarityMatrix(this int[][] adjacencyMatrix)
         {
             var size = adjacencyMatrix.Length;
-            var similarityMatrix = MatrixFactory.CreateMatrix(size, 0.0);
+            var similarityMatrix = ArrayFactory.CreateMatrix(size, 0.0);
 
             var nodeDegres = GetDegreeOfNodes(adjacencyMatrix);
 

@@ -21,7 +21,7 @@ namespace MAD2_Tasks.General.Extensions
             var matrixSize = Enumerable.Max(allNodes);
             var isNumberedFromZero = allNodes.Contains(0);
 
-            var adjacencyMatrix = MatrixFactory.CreateMatrix(matrixSize, 0);
+            var adjacencyMatrix = ArrayFactory.CreateMatrix(matrixSize, 0);
 
             foreach(var node in source)
             {
