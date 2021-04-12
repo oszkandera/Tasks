@@ -17,5 +17,7 @@ namespace MAD2_Tasks.Core.Code
 
         public static readonly string LinkSelectionModelExportPath = "../../../../Task3/Output/linkSelectionModel.gexf";
         public static readonly string CopyingModelExportPath = "../../../../Task3/Output/copyingModel.gexf";
+     
+        public static readonly string MultiLayerGraphSourcePath = "../../../Data/tailorshop.dat";
     }
 }

@@ -7,6 +7,9 @@ using System.Linq;
 using System.Collections.Generic;
 using Task3;
 using MAD2_Tasks.General.Enums;
+using Task4;
+using MAD2_Tasks.General.Models;
+using System.Text;
 
 namespace MAD2_Tasks.Core
 {
@@ -24,7 +27,10 @@ namespace MAD2_Tasks.Core
             //CommunityDetectionUsingHierarchicalClusteringTest();
 
             //Task 3 - K
-            ModelGeneratorTest();
+            //ModelGeneratorTest();
+
+            //Task 4 - K
+            AnalyerMultilayerGraph();
         }
 
         #region Task 1 - K
@@ -119,6 +125,36 @@ namespace MAD2_Tasks.Core
             var networkExporter = new NetworkExporter();
             networkExporter.ExportToGEXF(graphLinkSelection, Constants.LinkSelectionModelExportPath);
             networkExporter.ExportToGEXF(graphCopyingModel, Constants.CopyingModelExportPath, EdgeType.Directed);
+        }
+
+        #endregion
+
+        #region Task 4 - K
+
+        private static void AnalyerMultilayerGraph()
+        {
+            var pathToSource = Constants.MultiLayerGraphSourcePath;
+
+            var analyser = new MultilayerGraphAnalyser();
+            var result = analyser.ProcessAnalysis(pathToSource, new int[] { 0, 1, 2 });
+
+            var resultInCsv = CreateCsvString(result);
+        }
+
+        private static string CreateCsvString(MultilayerGraphAnalysisResult analysisResult)
+        {
+            var csvBuilder = new StringBuilder();
+            csvBuilder.AppendLine($"NodeId;Name;DegreeCentrality;DegreeDeviation;NeighborhoodCentrality;ConnectivityRedundandy;ExclusiveNeighborhood");
+
+            for (int i = 0; i < analysisResult.Graph.RowValues.Length; i++)
+            {
+                csvBuilder.AppendLine($"{i};{analysisResult.Graph.RowValues[i]};{analysisResult.DegreeCentrality[i]};" + 
+                                      $"{analysisResult.DegreeDeviation[i]};{analysisResult.NeighborhoodCentrality[i]};" + 
+                                      $"{analysisResult.ConnectivityRedundancy[i]};{analysisResult.ExclusiveNeighborhood[i]}");
+
+            }
+
+            return csvBuilder.ToString();
         }
 
         #endregion
