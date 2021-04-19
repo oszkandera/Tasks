@@ -36,5 +36,17 @@ namespace MAD2_Tasks.General.Extensions
 
             return adjacencyMatrix;
         }
+
+        public static void RemoveParalelEdges(this Dictionary<int, List<int>> network)
+        {
+            foreach (var node in network)
+            {
+                for (int i = 0; i < node.Value.Count; i++)
+                {
+                    var neighbor = node.Value[i];
+                    network[neighbor].Remove(node.Key);
+                }
+            }
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace MAD2_Tasks.General.Code
 {
@@ -9,7 +8,7 @@ namespace MAD2_Tasks.General.Code
     {
         public void ExportToGDF(Dictionary<int, Tuple<int, List<int>>> networkWithComunityId, Dictionary<int, string> colorMap, string filePath)
         {
-            using(var fileStream = new FileStream(filePath, FileMode.Create))
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 using(var writer = new StreamWriter(fileStream))
                 {

@@ -10,6 +10,7 @@ using MAD2_Tasks.General.Enums;
 using Task4;
 using MAD2_Tasks.General.Models;
 using System.Text;
+using Task5;
 
 namespace MAD2_Tasks.Core
 {
@@ -30,7 +31,12 @@ namespace MAD2_Tasks.Core
             //ModelGeneratorTest();
 
             //Task 4 - K
-            AnalyerMultilayerGraph();
+            //AnalyerMultilayerGraph();
+
+            //Task 5 - O
+            var network = GenerateGraphs();
+            //ExportToCsv(network, Constants.EpsilonNetworkOutputCsvPath + "2");
+            ExportToGdf(network, Constants.EpsilonLouvinCommunities, Constants.EpsilonComunitiesOutputPath);
         }
 
         #region Task 1 - K
@@ -41,7 +47,7 @@ namespace MAD2_Tasks.Core
             var vectorDataLoader = new VectorDataLoader();
             var vectorData = vectorDataLoader.LoadData(Constants.IrisDataSetPath, skipRowsNumber: 1, columnsToSkip: new int[] { 4 });
 
-            var network = epsilonRadisuAlgorithm.CreateNetwork(vectorData, 0.9);
+            var network = epsilonRadisuAlgorithm.CreateNetwork(vectorData, 0.5);
 
             var networkExporter = new NetworkExporter();
             networkExporter.ExportToGEXF(network, Constants.EpsilonGeneratedNetworkOutputPath);
@@ -155,6 +161,66 @@ namespace MAD2_Tasks.Core
             }
 
             return csvBuilder.ToString();
+        }
+
+        #endregion
+
+        #region Task5 - O
+
+        private static Dictionary<int, List<int>> GenerateGraphs()
+        {
+
+            var epsilonRadisuAlgorithm = new EpsilonRadiusNetworkGenerator();
+            var knnGeneratorAlgorithm = new KnnNetworkGenerator();
+            var epsilonKnnGeneratorAlgorithm = new EpsilonKnnNetworkGenerator();
+            var vectorDataLoader = new VectorDataLoader();
+            var networkLoader = new AdjacencyListGraphLoader();
+
+            var vectorData = vectorDataLoader.LoadData(Constants.IrisDataSetPath, skipRowsNumber: 1, columnsToSkip: new int[] { 4 });
+
+            var epsilonRadiusNetwork = epsilonRadisuAlgorithm.CreateNetwork(vectorData, 0.85);
+            var knnNetwork = knnGeneratorAlgorithm.CreateNetwork(vectorData, 10);
+            var epsilonKnnNetwork = epsilonKnnGeneratorAlgorithm.CreateNetwork(vectorData, 0.5, 9);
+            var karateClubNetwork = networkLoader.Load(Constants.KarateClubPath);
+
+
+            //return epsilonRadiusNetwork;
+            //return epsilonKnnNetwork;
+            //return knnNetwork;
+            return karateClubNetwork;
+        }
+
+
+        private static void ExportToCsv(Dictionary<int, List<int>> network, string path)
+        {
+            var networkExporter = new NetworkExporter();
+
+            networkExporter.ExportToCsv(network, path);
+        }
+
+        private static void ExportToGdf(Dictionary<int, List<int>> network, string pathToCommunities, string exportPath)
+        {
+            var task5 = new Task5Implementation();
+            var louvinNetworkCommunities = task5.GetNetworkWithComunitiesFromCsv(network, pathToCommunities);
+
+            var comunityExporter = new ComunityExporter();
+
+            var colorMap = new Dictionary<int, string>()
+            {
+                { 0, "#1B60C1" }, //blue
+                { 1, "#1BC156" }, //green
+                { 2, "#DD1717" }, //red
+                { 3, "#DD9217" }, //orange
+                { 4, "#BD30DF" }, //purple
+                { 5, "#ECE13B" }, //yellow
+                { 6, "#00B8C6" }, //light blue
+                { 7, "#1B2659" }, //dark blue
+                { 8, "#1B5932" }, //dark green
+                { 9, "#59241B" }, //dark red
+                { 10, "#84FF3C " }, //light green
+            };
+
+            comunityExporter.ExportToGDF(louvinNetworkCommunities, colorMap, exportPath);
         }
 
         #endregion
