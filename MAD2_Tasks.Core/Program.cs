@@ -14,8 +14,8 @@ using Task5;
 using Task6;
 using MAD2_Tasks.General.Extensions;
 using System.IO;
-using MAD2_Tasks.General.Factory;
 using System;
+using MAD2_Tasks.General.Helpers;
 
 namespace MAD2_Tasks.Core
 {
@@ -214,21 +214,8 @@ namespace MAD2_Tasks.Core
 
             var comunityExporter = new ComunityExporter();
 
-            var colorMap = new Dictionary<int, string>()
-            {
-                { 0, "#1B60C1" }, //blue
-                { 1, "#1BC156" }, //green
-                { 2, "#DD1717" }, //red
-                { 3, "#DD9217" }, //orange
-                { 4, "#BD30DF" }, //purple
-                { 5, "#ECE13B" }, //yellow
-                { 6, "#00B8C6" }, //light blue
-                { 7, "#1B2659" }, //dark blue
-                { 8, "#1B5932" }, //dark green
-                { 9, "#59241B" }, //dark red
-                { 10, "#84FF3C " }, //light green
-            };
-
+            var colorMap = ColorMapHelper.GetColorMap();
+            
             comunityExporter.ExportToGDF(louvinNetworkCommunities, colorMap, exportPath);
         }
 
@@ -288,7 +275,16 @@ namespace MAD2_Tasks.Core
 
             #region Visualisation
 
-            //TODO
+            var networkClassConnector = new NetworkClassConnector();
+            var epsilonNetworkWithClasses = networkClassConnector.GetNetworkWithClasses(epsilonRadiusNetwork, classes);
+            var knnNetworkWithClasses = networkClassConnector.GetNetworkWithClasses(knnNetwork, classes);
+            var epsilonKnnNetworkWithClasses = networkClassConnector.GetNetworkWithClasses(epsilonKnnNetwork, classes);
+
+            var colorMap = ColorMapHelper.GetColorMap();
+            var comunityExporter = new ComunityExporter();
+            comunityExporter.ExportToGDF(epsilonNetworkWithClasses, colorMap, Constants.EpsilonNetworkWithClassesPath);
+            comunityExporter.ExportToGDF(knnNetworkWithClasses, colorMap, Constants.KnnNetworkWithClassesPath);
+            comunityExporter.ExportToGDF(epsilonKnnNetworkWithClasses, colorMap, Constants.EpsilonKnnNetworkWithClassesPath);
 
             #endregion
         }

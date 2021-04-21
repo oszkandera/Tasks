@@ -46,6 +46,7 @@
 
         #endregion
 
+        #region Task 6
 
         public static readonly string EpsilonInfoMapClassesPath = "../../../../Task6/Input/EpsilonRadius/infoMapCluster.csv";
         public static readonly string EpsilonLabelPropClassesPath = "../../../../Task6/Input/EpsilonRadius/labelPropCluster.csv";
@@ -55,5 +56,12 @@
 
         public static readonly string EpsilonKnnInfoMapClassesPath = "../../../../Task6/Input/EpsilonKnn/infoMapCluster.csv";
         public static readonly string EpsilonKnnLabelPropClassesPath = "../../../../Task6/Input/EpsilonKnn/labelPropCluster.csv";
+
+        
+        public static readonly string EpsilonNetworkWithClassesPath = "../../../../Task6/Output/epsilonWithClasses.gdf";
+        public static readonly string KnnNetworkWithClassesPath = "../../../../Task6/Output/knnWithClasses.gdf";
+        public static readonly string EpsilonKnnNetworkWithClassesPath = "../../../../Task6/Output/epsilonKnnWithClasses.gdf";
+
+        #endregion
     }
 }
