@@ -1,4 +1,5 @@
 ﻿using MAD2_Tasks.General.Enums;
+using MAD2_Tasks.General.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
@@ -9,7 +10,8 @@ namespace MAD2_Tasks.General.Code
     {
         public void ExportToCsv(Dictionary<int, List<int>> network, string path)
         {
-            using(var fStream = new FileStream(path, FileMode.Create))
+            network.RemoveParalelEdges();
+            using (var fStream = new FileStream(path, FileMode.Create))
             {
                 using(var writer = new StreamWriter(fStream))
                 {
@@ -35,7 +37,7 @@ namespace MAD2_Tasks.General.Code
 
             if(edgeType == EdgeType.Undirected)
             {
-                RemoveParalelEdges(network);
+                network.RemoveParalelEdges();
             }
 
             foreach(var node in network)
@@ -70,22 +72,6 @@ namespace MAD2_Tasks.General.Code
             document.Add(rootElement);
 
             document.Save(path);
-        }
-
-        private Dictionary<int, List<int>> RemoveParalelEdges(Dictionary<int, List<int>> network)
-        {
-            var networkWithoutParalellEdges = new Dictionary<int, List<int>>();
-
-            foreach(var node in network)
-            {
-                for (int i = 0; i < node.Value.Count; i++)
-                {
-                    var neighbor = node.Value[i];
-                    network[neighbor].Remove(node.Key);
-                }
-            }
-
-            return networkWithoutParalellEdges;
         }
     }
 }
