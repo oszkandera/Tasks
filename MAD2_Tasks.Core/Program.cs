@@ -10,6 +10,11 @@ using MAD2_Tasks.General.Enums;
 using Task4;
 using MAD2_Tasks.General.Models;
 using System.Text;
+using Task6;
+using MAD2_Tasks.General.Extensions;
+using System.IO;
+using MAD2_Tasks.General.Factory;
+using System;
 
 namespace MAD2_Tasks.Core
 {
@@ -30,7 +35,10 @@ namespace MAD2_Tasks.Core
             //ModelGeneratorTest();
 
             //Task 4 - K
-            AnalyerMultilayerGraph();
+            //AnalyerMultilayerGraph();
+
+            //Task 6 - O
+            RunModularityTest();
         }
 
         #region Task 1 - K
@@ -155,6 +163,88 @@ namespace MAD2_Tasks.Core
             }
 
             return csvBuilder.ToString();
+        }
+
+        #endregion
+
+        #region Task 6 - O
+
+        public static void RunModularityTest()
+        {
+            var epsilonRadisuAlgorithm = new EpsilonRadiusNetworkGenerator();
+            var knnAlgorithm = new KnnNetworkGenerator();
+            var epsilonKnnAlgorithm = new EpsilonKnnNetworkGenerator();
+            var vectorDataLoader = new VectorDataLoader();
+            var modularityCounter = new ModularityCounter();
+
+            var (vectorData, classes) = vectorDataLoader.LoadDataWithClasses(Constants.IrisDataSetPath, 4, skipRowsNumber: 1);
+
+            var epsilonRadiusNetwork = epsilonRadisuAlgorithm.CreateNetwork(vectorData, 0.85);
+            var knnNetwork = knnAlgorithm.CreateNetwork(vectorData, 10);
+            var epsilonKnnNetwork = epsilonKnnAlgorithm.CreateNetwork(vectorData, 0.5, 9);
+
+            #region Original modularity
+
+            var adjacencyMatrixEpsilon = epsilonRadiusNetwork.ToAdjacencyMatrix();
+            var adjacencyMatrixKnn = knnNetwork.ToAdjacencyMatrix();
+            var adjacencyMatrixEpsilonKnn = epsilonKnnNetwork.ToAdjacencyMatrix();
+
+            var originalEpsilonModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilon, classes);
+            var originalKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixKnn, classes);
+            var originalEpsilonKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilonKnn, classes);
+
+            #endregion
+
+            #region InfoMap
+
+            var epsilonInfoMapClasses = LoadClasses(Constants.EpsilonInfoMapClassesPath);
+            var knnInfoMapClasses = LoadClasses(Constants.KnnInfoMapClassesPath);
+            var epsilonKnnInfoMapClasses = LoadClasses(Constants.EpsilonKnnInfoMapClassesPath);
+
+            var infoMapEpsilonModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilon, epsilonInfoMapClasses);
+            var infoMapKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixKnn, knnInfoMapClasses);
+            var infoMapEpsilonKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilonKnn, epsilonKnnInfoMapClasses);
+
+            #endregion
+
+            #region LabelProp
+
+            var epsilonLabelPropClasses = LoadClasses(Constants.EpsilonLabelPropClassesPath);
+            var knnLabelPropClasses = LoadClasses(Constants.KnnLabelPropClassesPath);
+            var epsilonKnnLabelPropClasses = LoadClasses(Constants.EpsilonKnnLabelPropClassesPath);
+
+            var LabelPropEpsilonModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilon, epsilonLabelPropClasses);
+            var LabelPropKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixKnn, knnLabelPropClasses);
+            var LabelPropEpsilonKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilonKnn, epsilonKnnLabelPropClasses);
+
+            #endregion
+
+            #region Visualisation
+
+            //TODO
+
+            #endregion
+        }
+
+        private static string[] LoadClasses(string pathToFileWithClasses)
+        {
+            var data = File.ReadAllLines(pathToFileWithClasses);
+
+            var classes = new string[150];
+
+            foreach(var line in data)
+            {
+                var values = line.Split(";");
+                if (values.Length != 2) continue;
+                if (String.IsNullOrWhiteSpace(values[0]) || String.IsNullOrWhiteSpace(values[0])) continue;
+
+                var nodeIdx = int.Parse(values[0]);
+                var @class = values[1];
+
+                classes[nodeIdx] = @class;
+            }
+
+            return classes;
         }
 
         #endregion

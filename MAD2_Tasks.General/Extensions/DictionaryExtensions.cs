@@ -18,8 +18,8 @@ namespace MAD2_Tasks.General.Extensions
         {
             var allNodes = source.Select(x => x.Key).Union(source.SelectMany(x => x.Value)).Distinct();
 
-            var matrixSize = Enumerable.Max(allNodes);
             var isNumberedFromZero = allNodes.Contains(0);
+            var matrixSize = isNumberedFromZero ? Enumerable.Max(allNodes) + 1 : Enumerable.Max(allNodes);
 
             var adjacencyMatrix = ArrayFactory.CreateMatrix(matrixSize, 0);
 

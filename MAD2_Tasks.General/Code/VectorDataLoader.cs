@@ -43,5 +43,43 @@ namespace MAD2_Tasks.General
 
             return data;
         }
+
+        public (double[][], string[]) LoadDataWithClasses(string filePath, int colWithClass, string separator = ";", int skipRowsNumber = 0)
+        {
+            var rawData = File.ReadAllLines(filePath);
+
+            var numberOfLines = rawData.Length;
+            var data = new double[numberOfLines - skipRowsNumber][];
+            var classes = new string[numberOfLines - skipRowsNumber];
+
+            var tempRowIndex = 0;
+            for (int r = skipRowsNumber; r < numberOfLines; r++)
+            {
+                var row = rawData[r];
+                var columns = row.Split(separator);
+
+                //var numberOfColumns = columns.Length - numberOfColumnsToSkip;
+
+                data[tempRowIndex] = new double[columns.Length];
+
+                for (int c = 0; c < columns.Length; c++)
+                {
+                    if(c == colWithClass)
+                    {
+                        classes[tempRowIndex] = columns[c];
+                    }
+                    else
+                    {
+                        if (Double.TryParse(columns[c], out double value))
+                        {
+                            data[tempRowIndex][c] = value;
+                        }
+                    }
+                }
+                tempRowIndex++;
+            }
+
+            return (data, classes);
+        }
     }
 }
