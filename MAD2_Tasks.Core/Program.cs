@@ -11,11 +11,12 @@ using Task4;
 using MAD2_Tasks.General.Models;
 using System.Text;
 using Task5;
-using Task6;
 using MAD2_Tasks.General.Extensions;
 using System.IO;
 using System;
 using MAD2_Tasks.General.Helpers;
+using MAD2_Tasks.Core.Algorithms;
+using MAD2_Tasks.General.Algorithms;
 
 namespace MAD2_Tasks.Core
 {
@@ -229,7 +230,7 @@ namespace MAD2_Tasks.Core
             var knnAlgorithm = new KnnNetworkGenerator();
             var epsilonKnnAlgorithm = new EpsilonKnnNetworkGenerator();
             var vectorDataLoader = new VectorDataLoader();
-            var modularityCounter = new ModularityCounter();
+            var modularityCounter = new ModularityRankProcessor();
 
             var (vectorData, classes) = vectorDataLoader.LoadDataWithClasses(Constants.IrisDataSetPath, 4, skipRowsNumber: 1);
 
@@ -243,9 +244,9 @@ namespace MAD2_Tasks.Core
             var adjacencyMatrixKnn = knnNetwork.ToAdjacencyMatrix();
             var adjacencyMatrixEpsilonKnn = epsilonKnnNetwork.ToAdjacencyMatrix();
 
-            var originalEpsilonModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilon, classes);
-            var originalKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixKnn, classes);
-            var originalEpsilonKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilonKnn, classes);
+            var originalEpsilonModularity = modularityCounter.CalculateModularity(adjacencyMatrixEpsilon, classes);
+            var originalKnnModularity = modularityCounter.CalculateModularity(adjacencyMatrixKnn, classes);
+            var originalEpsilonKnnModularity = modularityCounter.CalculateModularity(adjacencyMatrixEpsilonKnn, classes);
 
             #endregion
 
@@ -255,9 +256,9 @@ namespace MAD2_Tasks.Core
             var knnInfoMapClasses = LoadClasses(Constants.KnnInfoMapClassesPath);
             var epsilonKnnInfoMapClasses = LoadClasses(Constants.EpsilonKnnInfoMapClassesPath);
 
-            var infoMapEpsilonModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilon, epsilonInfoMapClasses);
-            var infoMapKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixKnn, knnInfoMapClasses);
-            var infoMapEpsilonKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilonKnn, epsilonKnnInfoMapClasses);
+            var infoMapEpsilonModularity = modularityCounter.CalculateModularity(adjacencyMatrixEpsilon, epsilonInfoMapClasses);
+            var infoMapKnnModularity = modularityCounter.CalculateModularity(adjacencyMatrixKnn, knnInfoMapClasses);
+            var infoMapEpsilonKnnModularity = modularityCounter.CalculateModularity(adjacencyMatrixEpsilonKnn, epsilonKnnInfoMapClasses);
 
             #endregion
 
@@ -267,9 +268,9 @@ namespace MAD2_Tasks.Core
             var knnLabelPropClasses = LoadClasses(Constants.KnnLabelPropClassesPath);
             var epsilonKnnLabelPropClasses = LoadClasses(Constants.EpsilonKnnLabelPropClassesPath);
 
-            var LabelPropEpsilonModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilon, epsilonLabelPropClasses);
-            var LabelPropKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixKnn, knnLabelPropClasses);
-            var LabelPropEpsilonKnnModularity = modularityCounter.CalculateModulairty(adjacencyMatrixEpsilonKnn, epsilonKnnLabelPropClasses);
+            var LabelPropEpsilonModularity = modularityCounter.CalculateModularity(adjacencyMatrixEpsilon, epsilonLabelPropClasses);
+            var LabelPropKnnModularity = modularityCounter.CalculateModularity(adjacencyMatrixKnn, knnLabelPropClasses);
+            var LabelPropEpsilonKnnModularity = modularityCounter.CalculateModularity(adjacencyMatrixEpsilonKnn, epsilonKnnLabelPropClasses);
 
             #endregion
 

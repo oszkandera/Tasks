@@ -48,5 +48,18 @@ namespace MAD2_Tasks.General.Extensions
                 }
             }
         }
+
+        public static void AddBidirectEdge(this Dictionary<int, List<int>> graph, int node1, int node2)
+        {
+            if (!graph.ContainsKey(node1)) graph.Add(node1, new List<int>());
+            if (!graph.ContainsKey(node2)) graph.Add(node2, new List<int>());
+
+            if (!graph[node1].Contains(node2)) graph[node1].Add(node2);
+            if (!graph[node2].Contains(node1)) graph[node2].Add(node1);
+
+
+            //graph[node1].Add(node2);
+            //graph[node2].Add(node1);
+        }
     }
 }
